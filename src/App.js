@@ -7,7 +7,7 @@ function App() {
   return (
     <Canvas
       // flat
-      dpr={ [ 1, 2 ] } //pixel min max ratio control 
+      // dpr={ [ 1, 2 ] } //pixel min max ratio control 
       gl={{
         antialias: true,
         // toneMapping: THREE.ACESFilmicToneMapping
@@ -16,7 +16,7 @@ function App() {
         fov: 45,
         near: 0.1,
         far: 200,
-        position: [3, 2, 6]
+        position: [0, 0, 4]
       }}>
       <Experience> </Experience>
     </Canvas >

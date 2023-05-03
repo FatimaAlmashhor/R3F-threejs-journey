@@ -1,67 +1,71 @@
 import { useThree, useFrame, extend } from "@react-three/fiber"
-import { OrbitControls, TransformControls, PivotControls, Html } from '@react-three/drei'
+import { Text, Html, ContactShadows, PresentationControls, useGLTF, Environment, Float } from '@react-three/drei'
 import { useRef } from 'react'
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-// extend({ OrbitControls })
-import CustomObject from "./CustomObject"
+
 export default function Experience() {
-    const cubeRef = useRef()
-    const sphare = useRef()
-    const groupRef = useRef()
-
-    // once it everythings is ready 
-    // evey sigle frame
-    useFrame((state, delta) => {
-        // const angle = state.clock.elapsedTime
-        // state.camera.position.x = Math.sin(angle) * 8
-        // state.camera.position.z = Math.cos(angle) * 8
-        // state.camera.lookAt(0, 0, 0)
-        // cubeRef.current.rotation.y += delta
-        // groupRef.current.rotation.y += delta
-    })
-
+    const computer = useGLTF('https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/macbook/model.gltf')
     return (
         <>
-            <OrbitControls makeDefault />
+            {/* <OrbitControls makeDefault /> */}
             <directionalLight position={[1, 2, 3]} intensity={1.5} />
             <ambientLight intensity={0.5} />
-            <Html>Test</Html>
-            <group ref={groupRef}>
-                {/* PivotControl not working in group */}
-                <PivotControls
-                    anchor={[0, 1, 0]}
-                    depthTest={false}
-                    lineWidth={4}
-                    axisColors={['#9381ff', '#ff4d6d', '#7ae582']}
-                    scale={1}>
-                    <mesh position-x={- 2} ref={sphare}>
-                        <sphereGeometry />
-                        <meshStandardMaterial color="orange" />
+            <color args={['#241a1a']} attach="background" />
+            <PresentationControls
+                global
+                rotation={[0.13, 0.1, 0]}
+                polar={[- 0.4, 0.2]}
+                azimuth={[- 1, 0.75]}
+                config={{ mass: 2, tension: 400 }}
+                snap={{ mass: 4, tension: 400 }}
+            >
+                <Float
+                    rotationIntensity={0.4}
+
+                >
+                    <rectAreaLight
+                        width={2.5}
+                        height={1.65}
+                        intensity={65}
+                        color={'#ff6900'}
+                        rotation={[- 0.1, Math.PI, 0]}
+                        position={[0, 0.55, - 1.15]}
+                    />
+                    <primitive
+                        object={computer.scene}
+                        position-y={- 1.2}
+                    >
                         <Html
-                            position={[1, 1, 0]}
-                            wrapperClass="label"
-                            center
-                            distanceFactor={8}
-                            occlude={[sphare]}
+                            transform
+                            wrapperClass="htmlScreen"
+                            distanceFactor={1.17}
+                            position={[0, 1.56, - 1.4]}
+                            rotation-x={- 0.256}
                         >
-                            That's a sphere 👍
+                            <iframe src="https://bruno-simon.com/html/" />
                         </Html>
-                    </mesh>
-                </PivotControls>
 
-                <TransformControls position-x={2} mode="rotate">
-                    <mesh scale={1.5}>
-                        <boxGeometry />
-                        <meshStandardMaterial color="mediumpurple" />
-                    </mesh>
-                </TransformControls>
-            </group>
+                    </primitive>
 
-            <mesh position-y={- 1} rotation-x={- Math.PI * 0.5} scale={10}>
-                <planeGeometry />
-                <meshBasicMaterial color="greenyellow" />
-            </mesh>
-            {/* <CustomObject /> */}
+                    <Text
+                        font="./bangers-v20-latin-regular.woff"
+                        fontSize={1}
+                        position={[2, 0.75, 0.75]}
+                        rotation-y={- 1.25}
+                        maxWidth={2}
+                    >
+                        BRUNO SIMON
+                    </Text>
+
+                </Float>
+            </PresentationControls>
+            <ContactShadows
+                position-y={- 1.4}
+                opacity={0.4}
+                scale={5}
+                blur={2.4}
+            />
+            <Environment preset="city" />
+
         </>
     )
 }
